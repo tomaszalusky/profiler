@@ -1,6 +1,5 @@
 package cz.zalusky.profiler;
 
-@SuppressWarnings("unused")
 public class Stack {
 
   static String indent = "";

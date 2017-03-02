@@ -1,7 +1,7 @@
-callspy
-=======
+profiler
+========
 
-A simple tracing agent
+Specify list of methods and get tree of their invocations with times and basic statistics.
 
-Run:
--Xbootclasspath/p:c:\w\w33-importafterrelease43\WEBAPI-404\2-remove-route\profiler\javassist-3.18.2-GA.jar;c:\w\w33-importafterrelease43\WEBAPI-404\2-remove-route\profiler\target\profiler.jar -javaagent:c:\w\w33-importafterrelease43\WEBAPI-404\2-remove-route\profiler\target\profiler.jar
+Run your app with following VM arguments:
+-Xbootclasspath/p:c:\java\workspace\profiler\javassist-3.18.2-GA.jar;c:\java\workspace\profiler\target\profiler.jar -javaagent:c:\java\workspace\profiler\target\profiler.jar=c:\path\to\config\file
