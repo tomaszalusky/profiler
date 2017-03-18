@@ -32,7 +32,9 @@ public class Config {
 	public Config(String configFilePath) throws IOException {
 		List<String> configLines = Files.readAllLines(new File(configFilePath).toPath());
 		for (String configLine : configLines) {
-			if (configLine.startsWith("#") || configLine.trim().length() == 0) continue;
+			if (configLine.startsWith("#") || configLine.trim().length() == 0) {
+				continue;
+			}
 			Matcher matcher = SIGNATURE_CONFIG.matcher(configLine);
 			if (matcher.matches()) {
 				String clazz = matcher.group(1);
@@ -83,12 +85,14 @@ public class Config {
 		if (rules == null) {
 			return classfileBuffer;
 		}
-		System.out.println("instrumenting " + className + " really");
+		System.err.println("instrumenting " + className + " really");
+		String methodName = null;
+		String methodSignature = null;
 		try {
 			CtClass ct = cp.makeClass(new ByteArrayInputStream(classfileBuffer));
 			for (Map.Entry<String,String> rule : rules) {
-				String methodName = rule.getKey();
-				String methodSignature = rule.getValue();
+				methodName = rule.getKey();
+				methodSignature = rule.getValue();
 				CtMethod method = ct.getMethod(methodName,methodSignature);
 				boolean isInitial = Objects.equals(className,initialClassName) && Objects.equals(methodName,initialMethodName) && Objects.equals(methodSignature,initialMethodSignature);
 				String reportedName = className.substring(className.lastIndexOf('/') + 1, className.length()) + "." + methodName;
@@ -97,6 +101,7 @@ public class Config {
 			}
 			return ct.toBytecode();
 		} catch (Throwable e) {
+			System.err.printf("Error instrumenting method %s with signature %s%n", methodName, methodSignature);
 			e.printStackTrace(System.err);
 		}
 		return classfileBuffer;
